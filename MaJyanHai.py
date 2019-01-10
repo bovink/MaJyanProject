@@ -221,7 +221,7 @@ class TeHai:
 
         for hai in l:
             count = sum(item.getName() == hai.getName() for item in l)
-            if count == 3:
+            if count >= 3:
                 print('刻子')
                 self.xiangtingshu = self.xiangtingshu - 2
                 self.removeSameCard(hai, l, count=3)
@@ -303,7 +303,7 @@ class TeHai:
 
 if __name__ == "__main__":
     print('main start')
-    tehai = TeHai(tehaistr='22234599p23m123s')
+    tehai = TeHai(tehaistr='111222333p11m23s')
     tehai.check_head()
     # tehai.check()
     # tehai.print()
