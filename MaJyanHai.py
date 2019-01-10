@@ -231,8 +231,9 @@ class TeHai:
             if hai.getName() == card.getName():
                 list.remove(hai)
                 count = count - 1
-
-            if count == 0:
+                if count == 0:
+                    break
+                self.removeSameCard(card, list, count=count)
                 break
 
         return None
@@ -297,7 +298,7 @@ class TeHai:
 
 if __name__ == "__main__":
     print('main start')
-    tehai = TeHai(tehaistr='12299p7m147s1234z')
+    tehai = TeHai(tehaistr='22299p7m147s1234z')
     tehai.check_head()
     # tehai.check()
     # tehai.print()
