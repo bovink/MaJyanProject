@@ -160,11 +160,10 @@ class TeHai:
         self.checkXiangTing(self.haiList[3])
         print('\n')
 
-
         self.checkDazi(self.haiList[0])
-        self.checkDazi(self.haiList[1])
-        self.checkDazi(self.haiList[2])
-        self.checkDazi(self.haiList[3])
+        # self.checkDazi(self.haiList[1])
+        # self.checkDazi(self.haiList[2])
+        # self.checkDazi(self.haiList[3])
 
     def checkXiangTing(self, l: list):
         '''
@@ -173,10 +172,17 @@ class TeHai:
         :return:
         '''
         for hai in l:
+            if 'z' in hai.getName():
+                break
+            if '9' in hai.getName():
+                continue
             nexthai = hai.next()
             if self.checkExist(nexthai, l):
-                nexthai = nexthai.next()
-                if self.checkExist(nexthai, l):
+                nexthai2 = nexthai.next()
+                if self.checkExist(nexthai2, l):
+                    hai.print()
+                    nexthai.print()
+                    nexthai2.print()
                     print('向听数减一')
                     self.xiangtingshu = self.xiangtingshu - 2
                     self.removeShunZi(hai, l)
@@ -218,12 +224,14 @@ class TeHai:
                 if j.getName() == i.getName():
                     l.remove(j)
 
-
+        print('lenth of hai is {}'.format(l.__len__()))
         if l.__len__() > 1:
-            for i in range(0, l.__len__()):
+            for i in range(0, l.__len__() - 1):
                 if i < l.__len__() - 1:
-                    dazi = Dazi(l[0], l[1])
+                    dazi = Dazi(l[i], l[i + 1])
                     if dazi.isDazi():
+                        l[i].print()
+                        l[i + 1].print()
                         self.xiangtingshu = self.xiangtingshu - 1
 
         print(self.xiangtingshu)
@@ -258,7 +266,7 @@ class TeHai:
 
 if __name__ == "__main__":
     print('main start')
-    tehai = TeHai(tehaistr='222456p33m12367s')
+    tehai = TeHai(tehaistr='1229p47m147s1234z')
     tehai.check()
     tehai.print()
     # a = ['1', '1', '2', '2', '3']
