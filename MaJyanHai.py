@@ -134,6 +134,26 @@ class TeHai:
 
             self.tehai = newTehai
 
+    def check_head(self):
+        self.cardCopy = []
+        self.head = []
+        for i in self.tehai:
+            if sum(item.getName() == i.getName() for item in self.head) == 1:
+                continue
+            count = sum(card.getName() == i.getName() for card in self.tehai)
+            if count >= 2:
+                l = self.tehai[:]
+                self.removeSameCard(i, l)
+                self.cardCopy.append(l)
+                self.head.append(i)
+
+        print('contain head num is {}'.format(self.cardCopy.__len__()))
+
+        if self.cardCopy.__len__() > 0:
+            self.xiangtingshu = 7
+        else:
+            self.xiangtingshu = 8
+
     def check(self):
         self.haiList = []
         self.haiList.append([])
@@ -206,6 +226,17 @@ class TeHai:
 
         print(self.xiangtingshu)
 
+    def removeSameCard(self, card: Hai, list: list, count=2):
+        for hai in list:
+            if hai.getName() == card.getName():
+                list.remove(hai)
+                count = count - 1
+
+            if count == 0:
+                break
+
+        return None
+
     def removeKeZi(self, firsthai: Hai, l: list):
         count = 3
         for hai in l:
@@ -266,9 +297,10 @@ class TeHai:
 
 if __name__ == "__main__":
     print('main start')
-    tehai = TeHai(tehaistr='1229p47m147s1234z')
-    tehai.check()
-    tehai.print()
+    tehai = TeHai(tehaistr='12299p7m147s1234z')
+    tehai.check_head()
+    # tehai.check()
+    # tehai.print()
     # a = ['1', '1', '2', '2', '3']
     # b = ['1', '2', '3']
     # for i in a:
