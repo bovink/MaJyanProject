@@ -150,17 +150,21 @@ class TeHai:
         print('contain head num is {}'.format(self.cardCopy.__len__()))
 
         if self.cardCopy.__len__() > 0:
-            self.xiangtingshu = 7
+            for i in self.cardCopy:
+                self.xiangtingshu = 7
+                self.check(i)
+                self.print()
+                print('#####')
         else:
             self.xiangtingshu = 8
 
-    def check(self):
+    def check(self, l: list):
         self.haiList = []
         self.haiList.append([])
         self.haiList.append([])
         self.haiList.append([])
         self.haiList.append([])
-        for i in self.tehai:
+        for i in l:
             if i.type == 'p':
                 self.haiList[0].append(i)
             elif i.type == 'm':
@@ -203,7 +207,7 @@ class TeHai:
                     hai.print()
                     nexthai.print()
                     nexthai2.print()
-                    print('向听数减一')
+                    print('顺子')
                     self.xiangtingshu = self.xiangtingshu - 2
                     self.removeShunZi(hai, l)
                     self.checkXiangTing(l)
@@ -218,7 +222,7 @@ class TeHai:
         for hai in l:
             count = sum(item.getName() == hai.getName() for item in l)
             if count == 3:
-                print('向听数减一')
+                print('刻子')
                 self.xiangtingshu = self.xiangtingshu - 2
                 self.removeKeZi(hai, l)
                 self.checkKeZi(l)
@@ -298,7 +302,7 @@ class TeHai:
 
 if __name__ == "__main__":
     print('main start')
-    tehai = TeHai(tehaistr='22299p7m147s1234z')
+    tehai = TeHai(tehaistr='23444499p23m123s')
     tehai.check_head()
     # tehai.check()
     # tehai.print()
