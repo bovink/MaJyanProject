@@ -175,16 +175,16 @@ class TeHai:
                 self.haiList[3].append(i)
 
     def print(self):
-        self.checkXiangTing(self.haiList[0])
+        self.checkKeZi(self.haiList[0])
         print('\n')
-        self.checkXiangTing(self.haiList[1])
+        self.checkKeZi(self.haiList[1])
         print('\n')
-        self.checkXiangTing(self.haiList[2])
+        self.checkKeZi(self.haiList[2])
         print('\n')
-        self.checkXiangTing(self.haiList[3])
+        self.checkKeZi(self.haiList[3])
         print('\n')
 
-        self.checkDazi(self.haiList[0])
+        # self.checkDazi(self.haiList[0])
         # self.checkDazi(self.haiList[1])
         # self.checkDazi(self.haiList[2])
         # self.checkDazi(self.haiList[3])
@@ -215,7 +215,7 @@ class TeHai:
 
         print(self.xiangtingshu)
 
-        self.checkKeZi(l)
+        # self.checkKeZi(l)
 
     def checkKeZi(self, l: list):
 
@@ -224,11 +224,12 @@ class TeHai:
             if count == 3:
                 print('刻子')
                 self.xiangtingshu = self.xiangtingshu - 2
-                self.removeKeZi(hai, l)
+                self.removeSameCard(hai, l, count=3)
                 self.checkKeZi(l)
                 return None
 
         print(self.xiangtingshu)
+        self.checkXiangTing(l)
 
     def removeSameCard(self, card: Hai, list: list, count=2):
         for hai in list:
@@ -302,7 +303,7 @@ class TeHai:
 
 if __name__ == "__main__":
     print('main start')
-    tehai = TeHai(tehaistr='23444499p23m123s')
+    tehai = TeHai(tehaistr='22234599p23m123s')
     tehai.check_head()
     # tehai.check()
     # tehai.print()
