@@ -69,7 +69,6 @@ class IncompleteCard:
             min = self.card2
             max = self.card1
 
-
         if self.card1.type in ['p', 'm', 's']:
             if max.num - min.num < 3:
                 return True
@@ -179,18 +178,26 @@ class Analyser:
 
             self.tehai = newTehai
 
-    def check_head(self):
+    def check_head(self, needCheckHead=True):
         self.cardCopy = []
         self.head = []
         for i in self.tehai:
             if sum(item.getName() == i.getName() for item in self.head) == 1:
                 continue
             count = sum(card.getName() == i.getName() for card in self.tehai)
-            if count >= 2:
+            if needCheckHead:
+                head = 2
+            else:
+                head = 1
+            if count >= head:
                 # 有雀头
                 l = self.tehai[:]
-                self.removeSameCard(i, l)
-                cardList = CardList(l, hasTwoSameCard=True, twoSameCard=i)
+                self.removeSameCard(i, l, count=head)
+                if needCheckHead:
+                    cardList = CardList(l, hasTwoSameCard=True, twoSameCard=i)
+                else:
+                    cardList = CardList(l, hasTwoSameCard=False, twoSameCard=i)
+
                 self.cardCopy.append(cardList)
                 self.head.append(i)
 
@@ -204,14 +211,6 @@ class Analyser:
                 self.print(i)
                 i.calculate()
                 print('#####')
-        self.xiangtingshu = 8
-        l = self.tehai[:]
-        cardList = CardList(l)
-        self.menzi = []
-        self.check(cardList)
-        self.print(cardList)
-        cardList.calculate()
-        print('#####')
 
     def check(self, cardList: CardList):
         self.haiList = []
@@ -361,8 +360,9 @@ class Analyser:
 
 if __name__ == "__main__":
     print('main start')
-    tehai = Analyser(tehaistr='123678p1235m111s')
+    tehai = Analyser(tehaistr='3444567p123m111s')
     tehai.check_head()
+    tehai.check_head(needCheckHead=False)
     # tehai.check()
     # tehai.print()
     # a = ['1', '1', '2', '2', '3']
