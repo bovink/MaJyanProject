@@ -308,17 +308,6 @@ class Analyser:
 
         return None
 
-    def removeKeZi(self, firsthai: Card, l: list):
-        count = 3
-        for hai in l:
-            if hai.getName() == firsthai.getName():
-                l.remove(hai)
-                count = count - 1
-
-            if count == 0:
-                break
-
-        return None
 
     def checkDazi(self, l: list, removeList: list, cardList: CardList):
         for i in removeList:
