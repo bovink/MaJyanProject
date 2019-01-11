@@ -69,12 +69,14 @@ class Dazi:
             min = self.hai2
             max = self.hai1
 
+
+        print(self.hai1.type)
         if self.hai1.type in ['p', 'm', 's']:
             if max.num - min.num < 3:
                 return True
-
         else:
             if max.num - min.num == 0:
+                print('字牌一对')
                 return True
 
         return False
@@ -127,11 +129,11 @@ class CardList:
 
     def checkIfHasTwoSameCard(self, has_two_same_card):
         if has_two_same_card:
-            self.baseNeedCard = 3
-            self.baseMaxNeedCard = 7
-        else:
             self.baseNeedCard = 4
             self.baseMaxNeedCard = 8
+        else:
+            self.baseNeedCard = 4
+            self.baseMaxNeedCard = 9
 
     def calculate(self):
         if self.inCompleteCardsNum >= self.baseNeedCard - self.completeCardsNum:
@@ -139,7 +141,8 @@ class CardList:
         else:
             self.needCard = self.baseMaxNeedCard - self.completeCardsNum * 2 - self.inCompleteCardsNum
 
-        print('现在是{}向听'.format(self.needCard))
+        print('面子数:{}，搭子数:{}'.format(self.completeCardsNum,self.inCompleteCardsNum))
+        print('现在缺{}张胡牌'.format(self.needCard))
 
     def addCompleteCardsNum(self):
         self.completeCardsNum += 1
@@ -353,7 +356,7 @@ class TeHai:
 
 if __name__ == "__main__":
     print('main start')
-    tehai = TeHai(tehaistr='111p111m145s1123z')
+    tehai = TeHai(tehaistr='1235689p12m12s11z')
     tehai.check_head()
     # tehai.check()
     # tehai.print()
