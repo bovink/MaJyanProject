@@ -139,6 +139,8 @@ class CardList:
         else:
             self.needCard = self.baseMaxNeedCard - self.completeCardsNum * 2 - self.inCompleteCardsNum
 
+        print('现在是{}向听'.format(self.needCard))
+
     def addCompleteCardsNum(self):
         self.completeCardsNum += 1
 
@@ -198,6 +200,7 @@ class TeHai:
                 self.xiangtingshu = 7
                 self.check(i)
                 self.print(i)
+                i.calculate()
                 print('#####')
         else:
             self.xiangtingshu = 8
@@ -224,10 +227,10 @@ class TeHai:
         self.checkKeZi(self.haiList[2], cardList)
         self.checkKeZi(self.haiList[3], cardList)
 
-        self.checkDazi(self.haiList[0], cardList)
-        self.checkDazi(self.haiList[1], cardList)
-        self.checkDazi(self.haiList[2], cardList)
-        self.checkDazi(self.haiList[3], cardList)
+        self.checkDazi(self.haiList[0], self.menzi, cardList)
+        self.checkDazi(self.haiList[1], self.menzi, cardList)
+        self.checkDazi(self.haiList[2], self.menzi, cardList)
+        self.checkDazi(self.haiList[3], self.menzi, cardList)
 
     def checkXiangTing(self, l: list, cardList: CardList):
         '''
@@ -298,8 +301,8 @@ class TeHai:
 
         return None
 
-    def checkDazi(self, l: list, cardList: CardList):
-        for i in self.menzi:
+    def checkDazi(self, l: list, removeList: list, cardList: CardList):
+        for i in removeList:
             for j in l:
                 if j.getName() == i.getName():
                     l.remove(j)
@@ -314,9 +317,8 @@ class TeHai:
                         # l[i + 1].print()
                         cardList.addInCompleteCardNum()
                         self.xiangtingshu = self.xiangtingshu - 1
-                        self.menzi.append(l[i])
-                        self.menzi.append(l[i + 1])
-                        self.checkDazi(l, cardList)
+                        newRemoveList = [l[i], l[i + 1]]
+                        self.checkDazi(l, newRemoveList, cardList)
                         return None
 
         # print(self.xiangtingshu)
@@ -351,7 +353,7 @@ class TeHai:
 
 if __name__ == "__main__":
     print('main start')
-    tehai = TeHai(tehaistr='111222333p11m23s')
+    tehai = TeHai(tehaistr='111p111m145s1123z')
     tehai.check_head()
     # tehai.check()
     # tehai.print()
