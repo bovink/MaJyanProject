@@ -70,13 +70,11 @@ class Dazi:
             max = self.hai1
 
 
-        print(self.hai1.type)
         if self.hai1.type in ['p', 'm', 's']:
             if max.num - min.num < 3:
                 return True
         else:
             if max.num - min.num == 0:
-                print('字牌一对')
                 return True
 
         return False
@@ -132,7 +130,7 @@ class CardList:
             self.baseNeedCard = 4
             self.baseMaxNeedCard = 8
         else:
-            self.baseNeedCard = 4
+            self.baseNeedCard = 5
             self.baseMaxNeedCard = 9
 
     def calculate(self):
@@ -206,8 +204,14 @@ class TeHai:
                 self.print(i)
                 i.calculate()
                 print('#####')
-        else:
-            self.xiangtingshu = 8
+        self.xiangtingshu = 8
+        l = self.tehai[:]
+        cardList = CardList(l)
+        self.menzi = []
+        self.check(cardList)
+        self.print(cardList)
+        cardList.calculate()
+        print('#####')
 
     def check(self, cardList: CardList):
         self.haiList = []
@@ -357,7 +361,7 @@ class TeHai:
 
 if __name__ == "__main__":
     print('main start')
-    tehai = TeHai(tehaistr='123p14m12s112233z')
+    tehai = TeHai(tehaistr='123678p1235m111s')
     tehai.check_head()
     # tehai.check()
     # tehai.print()
