@@ -201,6 +201,7 @@ class TeHai:
         if self.cardCopy.__len__() > 0:
             for i in self.cardCopy:
                 self.xiangtingshu = 7
+                self.menzi = []
                 self.check(i)
                 self.print(i)
                 i.calculate()
@@ -356,7 +357,7 @@ class TeHai:
 
 if __name__ == "__main__":
     print('main start')
-    tehai = TeHai(tehaistr='1235689p12m12s11z')
+    tehai = TeHai(tehaistr='123p14m12s112233z')
     tehai.check_head()
     # tehai.check()
     # tehai.print()
