@@ -3,7 +3,7 @@
 import math
 
 
-class Hai:
+class Card:
 
     def __init__(self, name):
         self.name = name
@@ -27,7 +27,7 @@ class Hai:
         l = ''
         l += str(nextNum)
         l += self.type
-        return Hai(l)
+        return Card(l)
 
     def getName(self):
         return self.name
@@ -49,15 +49,15 @@ class Hai:
         l = ''
         l += str(nextNum)
         l += self.type
-        return Hai(l)
+        return Card(l)
 
     def print(self):
         print('hai is {}{}'.format(self.num, self.type))
 
 
-class Dazi:
+class IncompleteCard:
 
-    def __init__(self, hai1: Hai, hai2: Hai):
+    def __init__(self, hai1: Card, hai2: Card):
         self.hai1 = hai1
         self.hai2 = hai2
 
@@ -115,18 +115,18 @@ class Dazi:
 
 class CardList:
 
-    def __init__(self, card_list: list, has_two_same_card=False, two_same_card: Hai = None):
-        self.cardList = card_list
+    def __init__(self, cardList: list, hasTwoSameCard=False, twoSameCard: Card = None):
+        self.cardList = cardList
         self.completeCardsNum = 0
-        self.inCompleteCardsNum = 0
-        self.two_same_card = two_same_card
+        self.incompleteCardsNum = 0
+        self.two_same_card = twoSameCard
         self.baseNeedCard = 0
         self.baseMaxNeedCard = 0
         self.needCard = 0
-        self.checkIfHasTwoSameCard(has_two_same_card)
+        self.checkIfHasTwoSameCard(hasTwoSameCard)
 
-    def checkIfHasTwoSameCard(self, has_two_same_card):
-        if has_two_same_card:
+    def checkIfHasTwoSameCard(self, hasTwoSameCard):
+        if hasTwoSameCard:
             self.baseNeedCard = 4
             self.baseMaxNeedCard = 8
         else:
@@ -134,19 +134,19 @@ class CardList:
             self.baseMaxNeedCard = 9
 
     def calculate(self):
-        if self.inCompleteCardsNum >= self.baseNeedCard - self.completeCardsNum:
+        if self.incompleteCardsNum >= self.baseNeedCard - self.completeCardsNum:
             self.needCard = self.baseNeedCard - self.completeCardsNum
         else:
-            self.needCard = self.baseMaxNeedCard - self.completeCardsNum * 2 - self.inCompleteCardsNum
+            self.needCard = self.baseMaxNeedCard - self.completeCardsNum * 2 - self.incompleteCardsNum
 
-        print('面子数:{}，搭子数:{}'.format(self.completeCardsNum,self.inCompleteCardsNum))
+        print('面子数:{}，搭子数:{}'.format(self.completeCardsNum, self.incompleteCardsNum))
         print('现在缺{}张胡牌'.format(self.needCard))
 
     def addCompleteCardsNum(self):
         self.completeCardsNum += 1
 
     def addInCompleteCardNum(self):
-        self.inCompleteCardsNum += 1
+        self.incompleteCardsNum += 1
 
     def getCardList(self):
         return self.cardList
@@ -155,7 +155,7 @@ class CardList:
 # 4个面子1个雀头 面子可为顺子或者刻子
 # 如果所有牌都不搭，按一般形来做牌的话，即一张浮牌需要摸进2次有效自摸才能形成面子，那4个面子即需要8次有效自摸即可形成单吊听牌
 
-class TeHai:
+class Analyser:
 
     def __init__(self, tehai: list = None, tehaistr: str = None):
         self.tehai = tehai
@@ -166,16 +166,16 @@ class TeHai:
             l = tehaistr.split('p')
             newTehai = []
             for item in l[0]:
-                newTehai.append(Hai(item + 'p'))
+                newTehai.append(Card(item + 'p'))
             l2 = l[1].split('m')
             for item in l2[0]:
-                newTehai.append(Hai(item + 'm'))
+                newTehai.append(Card(item + 'm'))
             l3 = l2[1].split('s')
             for item in l3[0]:
-                newTehai.append(Hai(item + 's'))
+                newTehai.append(Card(item + 's'))
             l4 = l3[1].split('z')
             for item in l4[0]:
-                newTehai.append(Hai(item + 'z'))
+                newTehai.append(Card(item + 'z'))
 
             self.tehai = newTehai
 
@@ -190,7 +190,7 @@ class TeHai:
                 # 有雀头
                 l = self.tehai[:]
                 self.removeSameCard(i, l)
-                cardList = CardList(l, has_two_same_card=True, two_same_card=i)
+                cardList = CardList(l, hasTwoSameCard=True, twoSameCard=i)
                 self.cardCopy.append(cardList)
                 self.head.append(i)
 
@@ -284,7 +284,7 @@ class TeHai:
         # print(self.xiangtingshu)
         self.checkXiangTing(l, cardList)
 
-    def removeSameCard(self, card: Hai, list: list, count=2):
+    def removeSameCard(self, card: Card, list: list, count=2):
         for hai in list:
             if hai.getName() == card.getName():
                 list.remove(hai)
@@ -297,7 +297,7 @@ class TeHai:
 
         return None
 
-    def removeKeZi(self, firsthai: Hai, l: list):
+    def removeKeZi(self, firsthai: Card, l: list):
         count = 3
         for hai in l:
             if hai.getName() == firsthai.getName():
@@ -319,7 +319,7 @@ class TeHai:
         if l.__len__() > 1:
             for i in range(0, l.__len__() - 1):
                 if i < l.__len__() - 1:
-                    dazi = Dazi(l[i], l[i + 1])
+                    dazi = IncompleteCard(l[i], l[i + 1])
                     if dazi.isDazi():
                         # l[i].print()
                         # l[i + 1].print()
@@ -332,7 +332,7 @@ class TeHai:
         # print(self.xiangtingshu)
         return None
 
-    def removeShunZi(self, firsthai: Hai, hailist: list):
+    def removeShunZi(self, firsthai: Card, hailist: list):
         secondhai = firsthai.next()
         thirdhai = secondhai.next()
         for hai in hailist:
@@ -351,7 +351,7 @@ class TeHai:
                 self.menzi.append(hai)
                 break
 
-    def checkExist(self, hai: Hai, l: list):
+    def checkExist(self, hai: Card, l: list):
         for item in l:
             if hai.getName() == item.getName():
                 return True
@@ -361,7 +361,7 @@ class TeHai:
 
 if __name__ == "__main__":
     print('main start')
-    tehai = TeHai(tehaistr='123678p1235m111s')
+    tehai = Analyser(tehaistr='123678p1235m111s')
     tehai.check_head()
     # tehai.check()
     # tehai.print()
