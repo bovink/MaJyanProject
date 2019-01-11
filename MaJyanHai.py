@@ -139,6 +139,15 @@ class CardList:
         else:
             self.needCard = self.baseMaxNeedCard - self.completeCardsNum * 2 - self.inCompleteCardsNum
 
+    def addCompleteCardsNum(self):
+        self.completeCardsNum += 1
+
+    def addInCompleteCardNum(self):
+        self.inCompleteCardsNum += 1
+
+    def getCardList(self):
+        return self.cardList
+
 
 # 4个面子1个雀头 面子可为顺子或者刻子
 # 如果所有牌都不搭，按一般形来做牌的话，即一张浮牌需要摸进2次有效自摸才能形成面子，那4个面子即需要8次有效自摸即可形成单吊听牌
@@ -175,9 +184,11 @@ class TeHai:
                 continue
             count = sum(card.getName() == i.getName() for card in self.tehai)
             if count >= 2:
+                # 有雀头
                 l = self.tehai[:]
                 self.removeSameCard(i, l)
-                self.cardCopy.append(l)
+                cardList = CardList(l, has_two_same_card=True, two_same_card=i)
+                self.cardCopy.append(cardList)
                 self.head.append(i)
 
         print('contain head num is {}'.format(self.cardCopy.__len__()))
@@ -186,18 +197,18 @@ class TeHai:
             for i in self.cardCopy:
                 self.xiangtingshu = 7
                 self.check(i)
-                self.print()
+                self.print(i)
                 print('#####')
         else:
             self.xiangtingshu = 8
 
-    def check(self, l: list):
+    def check(self, cardList: CardList):
         self.haiList = []
         self.haiList.append([])
         self.haiList.append([])
         self.haiList.append([])
         self.haiList.append([])
-        for i in l:
+        for i in cardList.getCardList():
             if i.type == 'p':
                 self.haiList[0].append(i)
             elif i.type == 'm':
@@ -207,18 +218,18 @@ class TeHai:
             elif i.type == 'z':
                 self.haiList[3].append(i)
 
-    def print(self):
-        self.checkKeZi(self.haiList[0])
-        self.checkKeZi(self.haiList[1])
-        self.checkKeZi(self.haiList[2])
-        self.checkKeZi(self.haiList[3])
+    def print(self, cardList: CardList):
+        self.checkKeZi(self.haiList[0], cardList)
+        self.checkKeZi(self.haiList[1], cardList)
+        self.checkKeZi(self.haiList[2], cardList)
+        self.checkKeZi(self.haiList[3], cardList)
 
-        self.checkDazi(self.haiList[0])
-        self.checkDazi(self.haiList[1])
-        self.checkDazi(self.haiList[2])
-        self.checkDazi(self.haiList[3])
+        self.checkDazi(self.haiList[0], cardList)
+        self.checkDazi(self.haiList[1], cardList)
+        self.checkDazi(self.haiList[2], cardList)
+        self.checkDazi(self.haiList[3], cardList)
 
-    def checkXiangTing(self, l: list):
+    def checkXiangTing(self, l: list, cardList: CardList):
         '''
 
         :param l:
@@ -239,14 +250,15 @@ class TeHai:
                     print('顺子')
                     self.xiangtingshu = self.xiangtingshu - 2
                     self.removeShunZi(hai, l)
-                    self.checkXiangTing(l)
+                    cardList.addCompleteCardsNum()
+                    self.checkXiangTing(l, cardList)
                     return None
 
         # print(self.xiangtingshu)
 
         # self.checkKeZi(l)
 
-    def checkKeZi(self, l: list):
+    def checkKeZi(self, l: list, cardList: CardList):
 
         for hai in l:
             count = sum(item.getName() == hai.getName() for item in l)
@@ -254,16 +266,18 @@ class TeHai:
                 print('刻子')
                 self.xiangtingshu = self.xiangtingshu - 2
                 self.removeSameCard(hai, l, count=3)
-                self.checkKeZi(l)
+                cardList.addCompleteCardsNum()
+                self.checkKeZi(l, cardList)
                 return None
 
         # print(self.xiangtingshu)
-        self.checkXiangTing(l)
+        self.checkXiangTing(l, cardList)
 
     def removeSameCard(self, card: Hai, list: list, count=2):
         for hai in list:
             if hai.getName() == card.getName():
                 list.remove(hai)
+                self.menzi.append(hai)
                 count = count - 1
                 if count == 0:
                     break
@@ -284,7 +298,7 @@ class TeHai:
 
         return None
 
-    def checkDazi(self, l: list):
+    def checkDazi(self, l: list, cardList: CardList):
         for i in self.menzi:
             for j in l:
                 if j.getName() == i.getName():
@@ -298,7 +312,12 @@ class TeHai:
                     if dazi.isDazi():
                         # l[i].print()
                         # l[i + 1].print()
+                        cardList.addInCompleteCardNum()
                         self.xiangtingshu = self.xiangtingshu - 1
+                        self.menzi.append(l[i])
+                        self.menzi.append(l[i + 1])
+                        self.checkDazi(l, cardList)
+                        return None
 
         # print(self.xiangtingshu)
         return None
