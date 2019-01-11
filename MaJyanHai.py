@@ -57,20 +57,20 @@ class Card:
 
 class IncompleteCard:
 
-    def __init__(self, hai1: Card, hai2: Card):
-        self.hai1 = hai1
-        self.hai2 = hai2
+    def __init__(self, card1: Card, card2: Card):
+        self.card1 = card1
+        self.card2 = card2
 
     def isDazi(self):
-        if self.hai1.num < self.hai2.num:
-            min = self.hai1
-            max = self.hai2
+        if self.card1.num < self.card2.num:
+            min = self.card1
+            max = self.card2
         else:
-            min = self.hai2
-            max = self.hai1
+            min = self.card2
+            max = self.card1
 
 
-        if self.hai1.type in ['p', 'm', 's']:
+        if self.card1.type in ['p', 'm', 's']:
             if max.num - min.num < 3:
                 return True
         else:
@@ -80,14 +80,14 @@ class IncompleteCard:
         return False
 
     def need(self):
-        if self.hai1.num < self.hai2.num:
-            min = self.hai1
-            max = self.hai2
+        if self.card1.num < self.card2.num:
+            min = self.card1
+            max = self.card2
         else:
-            min = self.hai2
-            max = self.hai1
+            min = self.card2
+            max = self.card1
 
-        if self.hai1.type in ['p', 'm', 's']:
+        if self.card1.type in ['p', 'm', 's']:
             if max.num - min.num == 2:
                 # min.next().print()
                 pass
