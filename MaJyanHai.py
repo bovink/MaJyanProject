@@ -113,6 +113,33 @@ class Dazi:
                 pass
 
 
+class CardList:
+
+    def __init__(self, card_list: list, has_two_same_card=False, two_same_card: Hai = None):
+        self.cardList = card_list
+        self.completeCardsNum = 0
+        self.inCompleteCardsNum = 0
+        self.two_same_card = two_same_card
+        self.baseNeedCard = 0
+        self.baseMaxNeedCard = 0
+        self.needCard = 0
+        self.checkIfHasTwoSameCard(has_two_same_card)
+
+    def checkIfHasTwoSameCard(self, has_two_same_card):
+        if has_two_same_card:
+            self.baseNeedCard = 3
+            self.baseMaxNeedCard = 7
+        else:
+            self.baseNeedCard = 4
+            self.baseMaxNeedCard = 8
+
+    def calculate(self):
+        if self.inCompleteCardsNum >= self.baseNeedCard - self.completeCardsNum:
+            self.needCard = self.baseNeedCard - self.completeCardsNum
+        else:
+            self.needCard = self.baseMaxNeedCard - self.completeCardsNum * 2 - self.inCompleteCardsNum
+
+
 # 4个面子1个雀头 面子可为顺子或者刻子
 # 如果所有牌都不搭，按一般形来做牌的话，即一张浮牌需要摸进2次有效自摸才能形成面子，那4个面子即需要8次有效自摸即可形成单吊听牌
 
