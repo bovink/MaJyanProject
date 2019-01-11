@@ -89,22 +89,28 @@ class Dazi:
 
         if self.hai1.type in ['p', 'm', 's']:
             if max.num - min.num == 2:
-                min.next().print()
+                # min.next().print()
+                pass
 
             if max.num - min.num == 1:
                 if min.num == 1:
-                    max.next().print()
+                    # max.next().print()
+                    pass
                 elif max == 9:
-                    min.previous().print()
+                    # min.previous().print()
+                    pass
                 else:
-                    min.previous().print()
-                    max.next().print()
+                    # min.previous().print()
+                    # max.next().print()
+                    pass
 
             if max.num - min.num == 0:
-                min.print()
+                # min.print()
+                pass
         else:
             if max.num - min.num == 0:
-                min.print()
+                # min.print()
+                pass
 
 
 # 4个面子1个雀头 面子可为顺子或者刻子
@@ -176,18 +182,14 @@ class TeHai:
 
     def print(self):
         self.checkKeZi(self.haiList[0])
-        print('\n')
         self.checkKeZi(self.haiList[1])
-        print('\n')
         self.checkKeZi(self.haiList[2])
-        print('\n')
         self.checkKeZi(self.haiList[3])
-        print('\n')
 
-        # self.checkDazi(self.haiList[0])
-        # self.checkDazi(self.haiList[1])
-        # self.checkDazi(self.haiList[2])
-        # self.checkDazi(self.haiList[3])
+        self.checkDazi(self.haiList[0])
+        self.checkDazi(self.haiList[1])
+        self.checkDazi(self.haiList[2])
+        self.checkDazi(self.haiList[3])
 
     def checkXiangTing(self, l: list):
         '''
@@ -204,16 +206,16 @@ class TeHai:
             if self.checkExist(nexthai, l):
                 nexthai2 = nexthai.next()
                 if self.checkExist(nexthai2, l):
-                    hai.print()
-                    nexthai.print()
-                    nexthai2.print()
+                    # hai.print()
+                    # nexthai.print()
+                    # nexthai2.print()
                     print('顺子')
                     self.xiangtingshu = self.xiangtingshu - 2
                     self.removeShunZi(hai, l)
                     self.checkXiangTing(l)
                     return None
 
-        print(self.xiangtingshu)
+        # print(self.xiangtingshu)
 
         # self.checkKeZi(l)
 
@@ -228,7 +230,7 @@ class TeHai:
                 self.checkKeZi(l)
                 return None
 
-        print(self.xiangtingshu)
+        # print(self.xiangtingshu)
         self.checkXiangTing(l)
 
     def removeSameCard(self, card: Hai, list: list, count=2):
@@ -261,17 +263,17 @@ class TeHai:
                 if j.getName() == i.getName():
                     l.remove(j)
 
-        print('lenth of hai is {}'.format(l.__len__()))
+        # print('lenth of hai is {}'.format(l.__len__()))
         if l.__len__() > 1:
             for i in range(0, l.__len__() - 1):
                 if i < l.__len__() - 1:
                     dazi = Dazi(l[i], l[i + 1])
                     if dazi.isDazi():
-                        l[i].print()
-                        l[i + 1].print()
+                        # l[i].print()
+                        # l[i + 1].print()
                         self.xiangtingshu = self.xiangtingshu - 1
 
-        print(self.xiangtingshu)
+        # print(self.xiangtingshu)
         return None
 
     def removeShunZi(self, firsthai: Hai, hailist: list):
