@@ -138,6 +138,7 @@ class CardList:
         else:
             self.needCard = self.baseMaxNeedCard - self.completeCardsNum * 2 - self.incompleteCardsNum
 
+    def print(self):
         print('面子数:{}，搭子数:{}'.format(self.completeCardsNum, self.incompleteCardsNum))
         print('现在缺{}张胡牌'.format(self.needCard))
 
@@ -149,6 +150,9 @@ class CardList:
 
     def getCardList(self):
         return self.cardList
+
+    def getNeedCard(self):
+        return self.needCard
 
 
 # 4个面子1个雀头 面子可为顺子或者刻子
@@ -203,6 +207,8 @@ class Analyser:
 
         print('contain head num is {}'.format(self.cardCopy.__len__()))
 
+        needCard = 9
+        needLeastCards = []
         if self.cardCopy.__len__() > 0:
             for i in self.cardCopy:
                 self.xiangtingshu = 7
@@ -210,7 +216,15 @@ class Analyser:
                 self.check(i)
                 self.print(i)
                 i.calculate()
-                print('#####')
+                if i.getNeedCard() < needCard:
+                    needCard = i.getNeedCard()
+                    needLeastCards = []
+                    needLeastCards.append(i)
+                elif i.getNeedCard() == needCard:
+                    needLeastCards.append(i)
+
+        for m in needLeastCards:
+            m.print()
 
     def check(self, cardList: CardList):
         self.haiList = []
@@ -257,7 +271,6 @@ class Analyser:
                     # hai.print()
                     # nexthai.print()
                     # nexthai2.print()
-                    print('顺子')
                     self.xiangtingshu = self.xiangtingshu - 2
                     self.removeShunZi(hai, l)
                     cardList.addCompleteCardsNum()
@@ -273,7 +286,6 @@ class Analyser:
         for hai in l:
             count = sum(item.getName() == hai.getName() for item in l)
             if count >= 3:
-                print('刻子')
                 self.xiangtingshu = self.xiangtingshu - 2
                 self.removeSameCard(hai, l, count=3)
                 cardList.addCompleteCardsNum()
